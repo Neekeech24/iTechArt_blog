@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>Главная страница</title>
+</head>
+<body>
+<div class="header">
+    <ul class="nav-inline">
+        <li><a href="{% url 'main_page' %}">Главная</a></li>
+        <li><a href="{% url 'create_article' %}">Создать статью</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="#">Профиль</a></li>
+        {% else %}
+            <li><a href="#">Войти</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% block content %}
+    <div class="body">
+        {% for article in articles %}
+            <div class="article">
+                <div class="theme">
+                    <a href="{% url 'article_detail' article_id=article.id %}">{{ article.theme }}</a>
+                </div>
+                <div class="art-body">
+                    <input type="checkbox" class="read-more-checker" id="read-more-checker" hidden/>
+                    <div class="text-limiter">
+                        {{ article.text }}
+                        <div class="bottom-gradient">
+                        </div>
+                    </div>
+                    <label for="read-more-checker" class="read-more-button"></label>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+</body>
+<script src="{% static 'js/main.js' %}"></script>
+</html>
