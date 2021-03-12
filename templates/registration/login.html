@@ -1,0 +1,44 @@
+{% extends 'user/main.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="login-block">
+        <div class="login-errors">
+            {% if form.errors %}
+                <p>Указанная комбинация логина и пароля не найдена. Попробуйте еще раз.</p>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <p>Ваших прав доступа недостаточно для просмотра данной страницы.</p>
+                {% else %}
+                    <p>Войдите, чтоб получить доступ к данной странице.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="login-form">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-input">
+                    <label for="id_username">Логин:</label>
+                    <input type="text" name="username" value="" autofocus="" autocapitalize="none"
+                           autocomplete="username" maxlength="150" required="" id="id_username">
+                </div>
+                <div class="form-input">
+                    <label for="id_password">Пароль:</label>
+                    <input type="password" name="password"
+                           autocomplete="current-password" required="" id="id_password">
+                </div>
+                <div class="form-button">
+                    <input id="form-button" type="submit" value="Войти"/>
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <a href="{% url 'registration' %}" class="register-button">Зарегистрироваться</a>
+                </div>
+            </form>
+        </div>
+        {# Assumes you setup the password_reset view in your URLconf #}
+        {#        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+    </div>
+{% endblock %}

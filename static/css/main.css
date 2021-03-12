@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+.global {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #555555;
 
@@ -12,7 +16,7 @@ body {
 
 .header {
     background-color: #3875d7;
-    width: 100vw;
+    width: 100%;
     height: 7vh;
     position: relative;
     font-family: monospace;

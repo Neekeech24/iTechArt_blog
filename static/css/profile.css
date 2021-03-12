@@ -1,0 +1,102 @@
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.profile, .info-input, .info-button, .delete-button {
+    font-family: monospace;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.info-input, .info-button {
+    font-size: 18px;
+}
+
+.profile {
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    margin: 5vh auto;
+}
+
+.user-articles {
+    margin-top: 3vh;
+}
+
+
+.user-articles .articles-count {
+    text-align: center;
+}
+
+.article-block {
+    margin-top: 1vh;
+    border: 1px white solid;
+    background-color: #777777;
+    padding: 1%;
+    height: 50vh;
+    overflow: auto;
+}
+
+.article-list li {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid white;
+}
+
+.article-list li:first-of-type {
+    border-top: none;
+}
+
+.user-form {
+    width: 17vw;
+}
+
+.info-list {
+    width: 17vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-list li {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-label {
+    line-height: 150%;
+}
+
+.info-input, .info-button, .delete-button {
+    background-color: #777777;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 0.5%;
+}
+
+.info-button:focus, .info-input:focus, .delete-button:focus {
+    outline: none;
+}
+
+.info-button {
+    display: flex;
+    margin: 2vh auto 0 auto;
+}
+
+.bottom-section {
+    margin-top: 2vh;
+}
+
+.delete-button {
+    border: 2px red solid;
+    color: red;
+    font-size: 18px;
+    background-color: #777777;
+}

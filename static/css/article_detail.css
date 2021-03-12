@@ -1,0 +1,26 @@
+.block-article {
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    margin: 5vh auto;
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.article-body {
+    background-color: #333333;
+    border: 2px solid white;
+    width: 90%;
+    margin: 2vh auto;
+}
+
+.article-info ul{
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: space-between;
+    font-size: 13px;
+}

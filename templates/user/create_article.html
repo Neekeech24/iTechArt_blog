@@ -1,20 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post">
-    {% csrf_token %}
-    <p>{{ form.theme }}
-        {{ form.theme.error_messages }}</p>
-    <p>{{ form.text }}
-        {{ form.text.error_messages }}</p>
-    <p hidden>
-        {{ form.author }}
-    </p>
-    <button>Save</button>
-</form>
-</body>
-</html>
+{% extends 'user/main.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/create_article.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-theme">
+                <label for="id_theme" class="theme-label">Тема:</label>
+                <input type="text" name="theme" maxlength="128" required="" id="id_theme">
+                {{ form.theme.error_messages }}
+            </div>
+            <div class="form-text">
+                <label for="id_text" class="text-label">Текст:</label>
+                <textarea name="text" cols="40" rows="10" required="" id="id_text"></textarea>
+                {{ form.text.error_messages }}
+            </div>
+            <p hidden>
+                {{ form.author }}
+            </p>
+            <div class="form-button">
+                <button id="form-button" type="submit">Сохранить</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

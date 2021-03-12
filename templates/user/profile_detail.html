@@ -1,0 +1,63 @@
+{% extends 'user/main.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="profile">
+        <div class="user-info">
+            {% if user.id == request.user.id %}
+                <form method="post" class="user-form">
+                    {% csrf_token %}
+                    <ul class="info-list">
+                        <li>
+                            <label for="id_login" class="info-label">Логин</label>
+                            <input id="id_login" name="username" class="info-input" value="{{ user.username }}">
+                        </li>
+                        <li>
+                            <label for="id_first_name" class="info-label">Имя</label>
+                            <input id="id_first_name" name="first_name" class="info-input"
+                                   value="{{ user.first_name }}">
+                        </li>
+                        <li>
+                            <label for="id_last_name" class="info-label">Фамилия</label>
+                            <input id="id_last_name" name="last_name" class="info-input" value="{{ user.last_name }}">
+                        </li>
+                    </ul>
+                    <button class="info-button" type="submit">Изменить личные данные</button>
+                </form>
+            {% else %}
+                <ul class="info-list">
+                    <li>Логин: {{ user.username }}</li>
+                    {% if user.first_name %}
+                        <li>Имя: {{ user.first_name }}</li>
+                    {% endif %}
+                    {% if user.last_name %}
+                        <li>Фамилия: {{ user.last_name }}</li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="user-articles">
+            <p class="articles-count">Всего статей: {{ user.article_set.count }}</p>
+            <div class="article-block">
+                <ul class="article-list">
+                    {% for article in user.article_set.all %}
+                        <li>
+                            <a class="article-link" href="{% url 'article_detail' article_id=article.id %}">
+                                {{ article.theme }}
+                            </a>
+                            {{ article.pub_date|date:"d.m.Y H:i" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% if user.id == request.user.id %}
+            <div class="bottom-section">
+                <a class="delete-button" href="{% url 'delete_profile' %}">Удалить аккаунт</a>
+                <a class="delete-button" href="{% url 'logout' %}">Выйти</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

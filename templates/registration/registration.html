@@ -1,0 +1,37 @@
+{% extends '../user/main.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="login-block">
+        <div class="login-errors">
+            {% if unique_username == True %}
+                <p>Данное имя пользователя уже используется.</p>
+            {% endif %}
+            {% if confirm_password == True %}
+                <p>Введенные пароли не совпадают.</p>
+            {% endif %}
+        </div>
+        <div class="registration-form">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-input">
+                    <label for="id_username">Имя пользователя:</label>
+                    <input id="id_username" name="username" type="text">
+                </div>
+                <div class="form-input">
+                    <label for="id_password">Пароль:</label>
+                    <input id="id_password" name="password" type="password">
+                </div>
+                <div class="form-input">
+                    <label for="id_password">Повторите пароль:</label>
+                    <input id="id_password" name="password2" type="password">
+                </div>
+                <div class="form-button">
+                    <button class="register-button">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

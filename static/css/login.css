@@ -1,0 +1,79 @@
+body {
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.login-block {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5vh auto;
+}
+
+.login-errors, .login-form, .registration-form, .form-button {
+    margin: 2vh auto;
+}
+
+.login-form {
+    width: 20vw;
+}
+
+.registration-form {
+    width: 25vw;
+}
+
+#id_password, #id_username {
+    width: 14vw;
+    background-color: #777;
+    border: 2px white solid;
+    border-radius: 5px;
+    padding: 0.5%;
+    font-family: monospace;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#id_username:focus, #id_password:focus {
+    outline: none;
+}
+
+.form-button {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+#form-button, .register-button {
+    width: 20%;
+    height: 100%;
+    line-height: 100%;
+    padding: 0.5%;
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+    background-color: #777777;
+    font-size: 18px;
+    color: white;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.register-button {
+    width: 50%;
+    text-decoration: none;
+    text-align: center;
+}
+
+.register-button:focus {
+    outline: none;
+}
+
+.form-input {
+    margin-top: 2vh;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
