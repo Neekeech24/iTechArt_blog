@@ -28,13 +28,7 @@
                     <a href="{% url 'article_detail' article_id=article.id %}">{{ article.theme }}</a>
                 </div>
                 <div class="art-body">
-                    <input type="checkbox" class="read-more-checker" id="read-more-checker" hidden/>
-                    <div class="text-limiter">
-                        {{ article.text }}
-                        <div class="bottom-gradient">
-                        </div>
-                    </div>
-                    <label for="read-more-checker" class="read-more-button"></label>
+                    {{ article.text }}
                 </div>
             </div>
         {% endfor %}

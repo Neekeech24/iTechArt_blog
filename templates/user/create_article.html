@@ -9,12 +9,12 @@
             {% csrf_token %}
             <div class="form-theme">
                 <label for="id_theme" class="theme-label">Тема:</label>
-                <input type="text" name="theme" maxlength="128" required="" id="id_theme">
+                {{ form.theme }}
                 {{ form.theme.error_messages }}
             </div>
             <div class="form-text">
                 <label for="id_text" class="text-label">Текст:</label>
-                <textarea name="text" cols="40" rows="10" required="" id="id_text"></textarea>
+                {{ form.text }}
                 {{ form.text.error_messages }}
             </div>
             <p hidden>

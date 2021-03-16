@@ -35,14 +35,14 @@
     border: 3px solid #ffffff;
     border-radius: 10px;
     background-color: #777777;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 #id_text {
     resize: none;
 }
 
-#id_text:focus, #id_theme:focus {
+#id_text:focus, #id_theme:focus, #form-button:focus {
     outline: none;
 }
 

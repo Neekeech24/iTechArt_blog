@@ -5,8 +5,16 @@
 {% endblock %}
 {% block content %}
     <div class="block-article">
-        <div class="article-theme">
-            {{ article.theme }}
+        <div class="upper-block">
+            <div class="artcile-theme">
+                {{ article.theme }}
+            </div>
+            <div class="owner-funcs">
+                {% if article.author == request.user %}
+                    <a href="{% url 'update_article' article_id=article.id %}">Изменить статью</a>
+                    <a id="article_delete" href="{% url 'delete_article' article_id=article.id %}">Удалить статью</a>
+                {% endif %}
+            </div>
         </div>
         <div class="article-body">
             {{ article.text }}
@@ -14,7 +22,7 @@
         <div class="article-info">
             <ul>
                 <li>{{ article.author }}</li>
-                <li>{{ article.pub_date }}</li>
+                <li>{{ article.pub_date|date:"d.m.Y H:i" }}</li>
             </ul>
         </div>
     </div>

@@ -1,6 +1,7 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.db.utils import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Article
@@ -28,6 +29,34 @@ def create_article(request):
         else:
             form = CreateArticleForm()
     return render(request, 'user/create_article.html', context={'form': form})
+
+
+@login_required
+def update_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    if article.author == request.user:
+        form = CreateArticleForm(initial={'theme':article.theme, 'text':article.text, 'author':article.author},
+                                 instance=article)
+        if request.method == 'POST':
+            form = CreateArticleForm(instance=article, data=request.POST)
+            if form.is_valid():
+                article = form.save()
+                return redirect('article_detail', article_id=article.id)
+            else:
+                form = CreateArticleForm(instance=article)
+        return render(request, 'user/create_article.html', context={'form':form})
+    else:
+        return render(request, '404.html')
+
+
+@login_required
+def delete_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    if article.author == request.user:
+        article.delete()
+        return redirect('main_page')
+    else:
+        return render(request, '404.html')
 
 
 @login_required
@@ -65,7 +94,7 @@ def registration(request):
                 login(request, new_user)
                 return redirect('user_profile')
             except IntegrityError:
-                return render(request, 'registration/registration.html', context={'unique_username':True})
+                return render(request, 'registration/registration.html', context={'unique_username': True})
         else:
-            return render(request, 'registration/registration.html', context={'confirm_password':True})
+            return render(request, 'registration/registration.html', context={'confirm_password': True})
     return render(request, 'registration/registration.html')
