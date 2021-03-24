@@ -6,7 +6,7 @@ from django.db import models
 
 class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
-    theme = models.CharField(max_length=128, verbose_name='Заголовок')
+    theme = models.CharField(max_length=128, verbose_name='Заголовок', unique=True)
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(auto_now_add=True)
 
@@ -26,3 +26,8 @@ class Comment(models.Model):
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
         ordering = ['-pub_date']
+
+
+class Rating(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.CharField(max_length=40, verbose_name='Session ID')

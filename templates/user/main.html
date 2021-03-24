@@ -14,25 +14,64 @@
         <li><a href="{% url 'main_page' %}">Главная</a></li>
         <li><a href="{% url 'create_article' %}">Создать статью</a></li>
         {% if user.is_authenticated %}
-            <li><a href="{% url 'profile_detail' user_id=request.user.id %}">Профиль</a></li>
+            <li><a href="{% url 'profile_detail' pk=request.user.id %}">Профиль</a></li>
         {% else %}
             <li><a href="{% url 'login' %}">Войти</a></li>
         {% endif %}
     </ul>
 </div>
 {% block content %}
-    <div class="body">
-        {% for article in articles %}
-            <div class="article">
-                <div class="theme">
-                    <a href="{% url 'article_detail' article_id=article.id %}">{{ article.theme }}</a>
-                </div>
-                <div class="art-body">
-                    {{ article.text }}
-                </div>
-            </div>
-        {% endfor %}
+    <div class="user-funcs">
+        <form method="get">
+            <input id="search" name="search-request" type="text" {% if sr %}value="{{ sr }}"{% endif %}>
+            <select id="sort" name="sort">
+                <option value="new">Новые по дате</option>
+                <option value="old">Старые по дате</option>
+                <option value="rate-desc">Рейтинг по убыванию</option>
+                <option value="rate-asc">Рейтинг по возрастанию</option>
+            </select>
+            <button>Поиск</button>
+        </form>
     </div>
+    <div class="body">
+        {% if object_list %}
+            {% for article in object_list %}
+                <div class="article">
+                    <div class="theme">
+                        <a href="{% url 'article_detail' article_id=article.id %}">{{ article.theme }}</a>
+                    </div>
+                    <div class="art-body" id="{{ forloop.counter }}" hidden>
+                        {{ article.text|linebreaks }}
+                    </div>
+                    <p class="pub-date" hidden>{{ article.pub_date }}</p>
+                    <button class="article-button" id="{{ forloop.counter }}">Развернуть</button>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">На первую</a>
+            |
+            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+            |
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            |
+            <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+            |
+            <a href="?page={{ page_obj.paginator.num_pages }}">На последнюю</a>
+        {% endif %}
+    </span>
+            </div>
+        {% else %}
+            <div class="pagination" style="font-size: 20px">Статей не найдено</div>
+        {% endif %}
 {% endblock %}
 </body>
 <script src="{% static 'js/main.js' %}"></script>

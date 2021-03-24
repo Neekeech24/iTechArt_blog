@@ -5,15 +5,17 @@
 {% endblock %}
 {% block content %}
     <div class="login-block">
-        <div class="login-errors">
-            {% if unique_username == True %}
-                <p>Данное имя пользователя уже используется.</p>
-            {% endif %}
-            {% if confirm_password == True %}
-                <p>Введенные пароли не совпадают.</p>
-            {% endif %}
-        </div>
         <div class="registration-form">
+            {% if form.errors %}
+                <ul>
+                {% for error in form.errors.username %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                {% for error in form.errors.password2 %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
             <form method="post">
                 {% csrf_token %}
                 <div class="form-input">

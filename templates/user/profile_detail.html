@@ -39,10 +39,10 @@
             {% endif %}
         </div>
         <div class="user-articles">
-            <p class="articles-count">Всего статей: {{ user.article_set.count }}</p>
+            <p class="articles-count">Всего статей: {{ object_list|length }}</p>
             <div class="article-block">
                 <ul class="article-list">
-                    {% for article in user.article_set.all %}
+                    {% for article in object_list %}
                         <li>
                             <a class="article-link" href="{% url 'article_detail' article_id=article.id %}">
                                 {{ article.theme }}
@@ -51,6 +51,25 @@
                         </li>
                     {% endfor %}
                 </ul>
+                <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">На первую</a>
+                        |
+                        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                        |
+                    {% endif %}
+                    <span class="current">
+                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        |
+                        <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                        |
+                        <a href="?page={{ page_obj.paginator.num_pages }}">На последнюю</a>
+                    {% endif %}
+                </span>
+                </div>
             </div>
         </div>
         {% if user.id == request.user.id %}

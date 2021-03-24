@@ -1,11 +1,23 @@
+body, .comment-form button, .comment-form textarea {
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.comment-form button, textarea {
+    font-size: 18px;
+}
+
+.comment-form button:focus, textarea:focus {
+    outline: none;
+}
+
+
 .block-article {
     width: 80vw;
     display: flex;
     flex-direction: column;
     margin: 5vh auto;
-    font-family: monospace;
-    font-size: 20px;
-    font-weight: bold;
     color: white;
 }
 
@@ -16,9 +28,14 @@
     margin: 3vh auto 0;
 }
 
-.article-body {
+.article-body, .owner-funcs a, .comment-form textarea, .comment-form button, .comment {
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
     background-color: #777;
-    border: 1px solid white;
+}
+
+.article-body {
     width: 90%;
     padding: 1%;
     margin: 2vh auto;
@@ -29,7 +46,7 @@
     margin: 3vh auto;
 }
 
-.article-info ul{
+.article-info ul {
     display: flex;
     flex-direction: row;
     list-style: none;
@@ -37,25 +54,79 @@
     font-size: 18px;
 }
 
+.article-info a, .comment-info a {
+    text-decoration: underline;
+    color: white;
+}
+
+.article-info a:hover, .comment-info a:hover {
+    color: #3875d7;
+}
+
 .owner-funcs {
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
-    width: 22%;
+    width: 25%;
 }
 
 .owner-funcs a {
     text-align: center;
     text-decoration: none;
-    color: white;
-    border: 2px solid white;
-    border-radius: 10px;
-    background-color: #777;
-    padding: 1%;
+    padding: 1% 4%;
     font-size: 18px;
     line-height: 100%;
 }
 
+.owner-funcs a:hover, #article_delete:hover {
+    color: #555;
+}
+
 #article_delete {
     border: 2px solid red;
-    color: red;
+}
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 2vh auto;
+}
+
+.comment-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.comment-form textarea {
+    width: 100%;
+    resize: none;
+    padding: 0.5% 1.5%;
+}
+
+.comment-form button {
+    height: 20%;
+    line-height: 3vh;
+    margin: 1vh 0 0 auto;
+    padding: 0 2%;
+}
+
+.comment-form button:hover {
+    color: #555;
+    cursor: pointer;
+}
+
+.comment {
+    cursor: default;
+    font-size: 18px;
+    margin-top: 2vh;
+    padding: 0.5% 1.5%;
+}
+
+.comment-info ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

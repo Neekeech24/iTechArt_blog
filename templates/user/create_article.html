@@ -7,6 +7,11 @@
     <div class="form">
         <form method="post">
             {% csrf_token %}
+            {% for error in errors %}
+                {% if error == 'theme' %}
+                    <p id="unique-error">Статья с такой темой уже существует</p>
+                {% endif %}
+            {% endfor %}
             <div class="form-theme">
                 <label for="id_theme" class="theme-label">Тема:</label>
                 {{ form.theme }}

@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-.form-text, .form-theme, #id_text, #id_theme, #form-button {
+.form-text, .form-theme, #id_text, #id_theme, #form-button, #unique-error {
     font-family: monospace;
     font-size: 20px;
     color: white;
@@ -57,3 +57,11 @@
     font-size: 20px;
 }
 
+#form-button:hover {
+    cursor: pointer;
+    color: #555
+}
+
+#unique-error {
+    text-align: center;
+}

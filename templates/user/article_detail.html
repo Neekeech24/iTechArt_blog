@@ -11,19 +11,53 @@
             </div>
             <div class="owner-funcs">
                 {% if article.author == request.user %}
-                    <a href="{% url 'update_article' article_id=article.id %}">Изменить статью</a>
                     <a id="article_delete" href="{% url 'delete_article' article_id=article.id %}">Удалить статью</a>
+                    <a href="{% url 'update_article' article_id=article.id %}">Изменить статью</a>
+                {% else %}
+{#                    <form method="post" action=""#}
+                    <label for="up" type="button">Мне нравится</label>
+                    <input id="up" type="button" name="rating" value="True" hidden>
                 {% endif %}
             </div>
         </div>
         <div class="article-body">
-            {{ article.text }}
+            {{ article.text|linebreaks }}
         </div>
         <div class="article-info">
             <ul>
-                <li>{{ article.author }}</li>
-                <li>{{ article.pub_date|date:"d.m.Y H:i" }}</li>
+                <li>Автор: <a href="{% url 'profile_detail' pk=article.author.id %}">{{ article.author }}</a><br/>
+                    Дата публикации: {{ article.pub_date|date:"d.m.Y H:i" }}</li>
+                <li>Рейтинг: {{ article.rating|length }}<br/>
+                    Комментариев: {{ article.comment_set.all|length }}</li>
             </ul>
+        </div>
+        <div class="comment-section">
+            {% if request.user.is_authenticated %}
+                <form method="post" class="comment-form">
+                    {% csrf_token %}
+                    <textarea name="body" type="text" rows="10"></textarea>
+                    <input hidden name="article" value="{{ article.id }}">
+                    <input hidden name="author" value="{{ request.user.id }}">
+                    <button>Отправить</button>
+                </form>
+            {% endif %}
+            <div class="comments-block">
+                {% for comment in article.comment_set.all %}
+                    <div class="comment">
+                        <div class="comment-body">
+                            {{ comment.body }}
+                        </div>
+                        <div class="comment-info">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'profile_detail' pk=comment.author.id %}">{{ comment.author }}</a>
+                                </li>
+                                <li>{{ comment.pub_date|date:"d.m.Y H:i" }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

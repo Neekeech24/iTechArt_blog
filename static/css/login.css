@@ -47,7 +47,7 @@ body {
 }
 
 
-#form-button, .register-button {
+#form-button, #register-button {
     width: 20%;
     height: 100%;
     line-height: 100%;
@@ -61,13 +61,18 @@ body {
     font-weight: bold;
 }
 
-.register-button {
+#form-button:hover, #register-button:hover {
+    cursor: pointer;
+    color: #555
+}
+
+#register-button {
     width: 50%;
     text-decoration: none;
     text-align: center;
 }
 
-.register-button:focus {
+#register-button:focus {
     outline: none;
 }
 
