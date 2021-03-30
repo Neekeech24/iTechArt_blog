@@ -1,5 +1,6 @@
 "use strict"
 
+
 let buttons = document.querySelectorAll('.article-button')
 let articles = document.querySelectorAll('.art-body')
 for (let i = 0; i < buttons.length; i++) {
@@ -14,4 +15,3 @@ for (let i = 0; i < buttons.length; i++) {
         }
     })
 }
-

@@ -22,13 +22,15 @@
 </div>
 {% block content %}
     <div class="user-funcs">
-        <form method="get">
+        <form method="get" name="filter">
             <input id="search" name="search-request" type="text" {% if sr %}value="{{ sr }}"{% endif %}>
             <select id="sort" name="sort">
                 <option value="new">Новые по дате</option>
                 <option value="old">Старые по дате</option>
                 <option value="rate-desc">Рейтинг по убыванию</option>
                 <option value="rate-asc">Рейтинг по возрастанию</option>
+                <option value="a-desc">Автор по алфавиту</option>
+                <option value="a-asc">Автор в обратном порядке</option>
             </select>
             <button>Поиск</button>
         </form>
@@ -74,5 +76,7 @@
         {% endif %}
 {% endblock %}
 </body>
-<script src="{% static 'js/main.js' %}"></script>
+{% block script %}
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
 </html>

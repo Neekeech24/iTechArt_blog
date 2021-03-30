@@ -40,6 +40,18 @@
         </div>
         <div class="user-articles">
             <p class="articles-count">Всего статей: {{ object_list|length }}</p>
+
+            <form method="get" name="filter">
+                <input id="search" name="search-request" type="text" {% if sr %}value="{{ sr }}"{% endif %}>
+                <select id="sort" name="sort">
+                    <option value="new">Новые по дате</option>
+                    <option value="old">Старые по дате</option>
+                    <option value="rate-desc">Рейтинг по убыванию</option>
+                    <option value="rate-asc">Рейтинг по возрастанию</option>
+                </select>
+                <button>Поиск</button>
+            </form>
+
             <div class="article-block">
                 <ul class="article-list">
                     {% for article in object_list %}

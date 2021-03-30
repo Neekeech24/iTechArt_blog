@@ -2,6 +2,7 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -9,6 +10,7 @@ from django.views.generic import CreateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import MultipleObjectMixin
 
+from blog_app.models import Article
 from profile_app.forms import UpdateUserForm, RegisterUserForm
 
 
@@ -54,15 +56,27 @@ class ProfileDetailView(DetailView, MultipleObjectMixin):
 
     def get_context_data(self, **kwargs):
         self.object = self.get_object(User.objects.prefetch_related('article_set'))
-        object_list = self.object.article_set.all()
+        object_list = self.get_articles(self.request)
         context = super(ProfileDetailView, self).get_context_data(object_list=object_list, **kwargs)
         context['form'] = UpdateUserForm()
         return context
 
+    def get_articles(self, request, *args, **kwargs):
+        sr = request.GET.get('search-request')
+        sort = request.GET.get('sort')
+        sort_dict = {'new': '-pub_date', 'old': 'pub_date',
+                     'rate-desc': '-rating', 'rate-asc': 'rating'}
+        queryset = Article.objects.filter(author=request.user)
+        if sr:
+            queryset = queryset.filter(Q(theme__icontains=sr) | Q(text__icontains=sr))
+        if sort:
+            queryset = queryset.order_by(sort_dict[sort])
+        return queryset
+
 
 @login_required
 def user_profile(request):
-    return redirect('profile_detail', user_id=request.user.id)
+    return redirect('profile_detail', pk=request.user.id)
 
 
 @login_required

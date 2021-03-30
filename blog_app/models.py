@@ -17,7 +17,9 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
+    auth_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', blank=True, null=True)
+    anon_user = models.CharField(max_length=40, verbose_name='Session ID', blank=True, null=True)
+    username = models.CharField(default='Гость', max_length=40)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     body = models.CharField(max_length=255, verbose_name='Комментарий')
     pub_date = models.DateTimeField(auto_now_add=True, null=True)
@@ -30,4 +32,5 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    user = models.CharField(max_length=40, verbose_name='Session ID')
+    anon_user = models.CharField(max_length=40, verbose_name='Session ID', blank=True, null=True)
+    auth_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
