@@ -38,7 +38,7 @@
 
             <form method="post" class="comment-form" name="comment-form" action="{% url 'create_comment' %}">
                 {% csrf_token %}
-                <textarea name="body" type="text" rows="10"></textarea>
+                <textarea name="body" type="text" rows="5" placeholder="Ваш комментарий"></textarea>
                 <input hidden name="article" value="{{ article.id }}">
                 <button>Отправить</button>
             </form>
@@ -68,6 +68,7 @@
     </div>
 {% endblock %}
 {% block script %}
+    <script src="/static/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="{% static 'js/comment.js' %}"></script>
 {% endblock %}
 

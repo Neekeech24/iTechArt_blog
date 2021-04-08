@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/', include('profile_app.urls')),
     path('admin/', admin.site.urls),
     path('__debug__/', include(debug_toolbar.urls)),
+    path('_nested_admin/', include('nested_admin.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

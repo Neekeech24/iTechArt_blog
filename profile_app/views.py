@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
+from django.template.response import TemplateResponse
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import CreateView, DetailView
@@ -66,7 +67,7 @@ class ProfileDetailView(DetailView, MultipleObjectMixin):
         sort = request.GET.get('sort')
         sort_dict = {'new': '-pub_date', 'old': 'pub_date',
                      'rate-desc': '-rating', 'rate-asc': 'rating'}
-        queryset = Article.objects.filter(author=request.user)
+        queryset = Article.objects.filter(author=self.object)
         if sr:
             queryset = queryset.filter(Q(theme__icontains=sr) | Q(text__icontains=sr))
         if sort:
@@ -92,6 +93,9 @@ class RegistraionView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('main_page')
     form_class = RegisterUserForm
     success_message = "Your profile was created successfully"
+
+    def form_invalid(self, form):
+        return TemplateResponse(self.request, template='registration/registration.html', context=self.get_context_data(), status=400)
 
     def form_valid(self, form):
         self.object = form.save()

@@ -105,6 +105,10 @@ body, .comment-form button, .comment-form textarea {
     padding: 0.5% 1.5%;
 }
 
+.comment-form textarea::-webkit-input-placeholder {
+    color: #bbbbbb;
+}
+
 .comment-form button {
     height: 20%;
     line-height: 3vh;

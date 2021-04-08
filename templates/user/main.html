@@ -21,26 +21,39 @@
     </ul>
 </div>
 {% block content %}
-    <div class="user-funcs">
-        <form method="get" name="filter">
-            <input id="search" name="search-request" type="text" {% if sr %}value="{{ sr }}"{% endif %}>
-            <select id="sort" name="sort">
-                <option value="new">Новые по дате</option>
-                <option value="old">Старые по дате</option>
-                <option value="rate-desc">Рейтинг по убыванию</option>
-                <option value="rate-asc">Рейтинг по возрастанию</option>
-                <option value="a-desc">Автор по алфавиту</option>
-                <option value="a-asc">Автор в обратном порядке</option>
-            </select>
-            <button>Поиск</button>
-        </form>
-    </div>
     <div class="body">
         {% if object_list %}
+            <div class="filter-form">
+                <form method="get" name="filter">
+                    <input class="filter-input" id="search" name="search-request" type="text"
+                           {% if sr %}value="{{ sr }}"{% endif %}>
+                    <select class="filter-input" id="sort" name="sort">
+                        <option value="new">Новые по дате</option>
+                        <option value="old">Старые по дате</option>
+                        <option value="rate-desc">Рейтинг по убыванию</option>
+                        <option value="rate-asc">Рейтинг по возрастанию</option>
+                        <option value="a-desc">Автор по алфавиту</option>
+                        <option value="a-asc">Автор в обратном порядке</option>
+                    </select>
+                    <button class="filter-input" id="filter-button">Поиск</button>
+                </form>
+            </div>
             {% for article in object_list %}
                 <div class="article">
                     <div class="theme">
                         <a href="{% url 'article_detail' article_id=article.id %}">{{ article.theme }}</a>
+                        <div class="article-info">
+                            <p>
+                                <img id="comment-icon"
+                                     src="https://img.icons8.com/fluent-systems-filled/2x/ffffff/topic.png">
+                                <span>: {{ article.comment_count }}</span>
+                            </p>
+                            <p>
+                                <img id="rating-icon"
+                                     src="https://img.icons8.com/fluent-systems-filled/2x/ffffff/facebook-like.png">
+                                : {{ article.rating_count }}
+                            </p>
+                        </div>
                     </div>
                     <div class="art-body" id="{{ forloop.counter }}" hidden>
                         {{ article.text|linebreaks }}

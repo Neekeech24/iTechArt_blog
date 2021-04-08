@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -20,10 +21,14 @@ class RegisterUserForm(forms.ModelForm):
         model = User
         fields = ('username',)
 
-    def clean_password2(self):
-        cd = self.cleaned_data
+    def clean(self):
+        super().clean()
         user = self.instance
-        validate_password(cd['password2'], user=user)
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Введенные пароли не совпадают')
-        return cd['password2']
+        try:
+            validate_password(self.cleaned_data['password'], user=user)
+            if self.cleaned_data['password'] != self.cleaned_data['password2']:
+                self.add_error('password','Введенные пароли не совпадают.')
+            return self.cleaned_data
+        except KeyError:
+            return self.cleaned_data
+

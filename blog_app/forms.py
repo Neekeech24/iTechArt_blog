@@ -9,6 +9,16 @@ class CreateArticleForm(forms.ModelForm):
                             label='theme', required=True)
     text = forms.CharField(help_text='Текст статьи', widget=forms.Textarea, required=True)
 
+    def clean(self):
+        super().clean()
+        try:
+            if Article.objects.filter(theme=self.cleaned_data['theme']).exists():
+                self.add_error('theme', 'Статья с указанной темой уже существует.')
+            return self.cleaned_data
+        except KeyError:
+            return self.cleaned_data
+
+
     class Meta:
         model = Article
         fields = ['theme', 'text', 'author']
@@ -22,4 +32,4 @@ class CreateCommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['auth_user', 'anon_user', 'article', 'body']
+        fields = ['auth_user', 'anon_user', 'article', 'body', 'username']

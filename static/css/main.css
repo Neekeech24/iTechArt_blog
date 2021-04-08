@@ -77,6 +77,15 @@ body {
     margin: 1vh 1.5vw 1vh 1.5vw;
 }
 
+.theme {
+    display: flex;
+    justify-content: space-between;
+}
+
+.theme:hover {
+    cursor: default;
+}
+
 .theme a {
     text-decoration: none;
     color: white;
@@ -85,6 +94,14 @@ body {
 .theme a:hover {
     color: #555555
 }
+
+
+#comment-icon, #rating-icon {
+    height: 18px;
+    width: 18px;
+    vertical-align: middle;
+}
+
 
 .art-body {
     margin-left: 2vw;
@@ -120,4 +137,28 @@ body {
 
 .pagination a:hover {
     color: #3875d7;
+}
+
+/* FILTER */
+
+.filter-form {
+    margin-bottom: 5px;
+}
+
+#search {
+    height: 21px;
+}
+
+.filter-input {
+    background: #777;
+    border: 1px solid white;
+    color: white;
+    font-size: 16px;
+    font-family: monospace;
+    font-weight: bold;
+    height: 23px;
+}
+
+#filter-button {
+    padding: 0 1%;
 }

@@ -2,13 +2,27 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
 # Create your models here.
+
+
 
 class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     theme = models.CharField(max_length=128, verbose_name='Заголовок', unique=True)
     text = models.TextField(verbose_name='Текст')
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
+
+    def __str__(self):
+        return self.theme
+
+    def get_comment_count(self):
+        return self.comment_count
+    get_comment_count.short_description = 'Кол-во комментариев'
+
+    def get_rating_count(self):
+        return self.rating_count
+    get_rating_count.short_description = 'Рейтинг'
 
     class Meta:
         verbose_name = 'Статья'
@@ -19,10 +33,13 @@ class Article(models.Model):
 class Comment(models.Model):
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', blank=True, null=True)
     anon_user = models.CharField(max_length=40, verbose_name='Session ID', blank=True, null=True)
-    username = models.CharField(default='Гость', max_length=40)
+    username = models.CharField(max_length=40)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     body = models.CharField(max_length=255, verbose_name='Комментарий')
     pub_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.article.theme
 
     class Meta:
         verbose_name = 'Комментарий'
