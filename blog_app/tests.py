@@ -19,10 +19,11 @@ class ArticleCreateTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.client = Client()
+        super().setUpTestData()
         cls.user = UserFactory.create()
 
     def setUp(self):
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_non_logged_user(self):
@@ -43,9 +44,9 @@ class ArticleCreateTest(TestCase):
 
     def test_non_unique_theme(self):
         article = ArticleFactory.create(theme='Theme')
-        response = self.client.post('/create_article', {'theme':'Theme',
-                                                        'text':'Text',
-                                                        'author':self.user.id})
+        response = self.client.post('/create_article', {'theme': 'Theme',
+                                                        'text': 'Text',
+                                                        'author': self.user.id})
         expected_errors = {
             'theme': ['Статья с указанной темой уже существует.']
         }
@@ -64,11 +65,12 @@ class MainPageTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.client = Client()
+        super().setUpTestData()
         cls.articles = ArticleFactory.create_batch(10)
         cls.user = UserFactory.create()
 
     def setUp(self):
+        super().setUp()
         self.client.force_login(self.user)
 
     def test_main_page(self):
@@ -77,6 +79,6 @@ class MainPageTest(TestCase):
         self.assertEqual(10, len(response.context['object_list']))
 
     def test_main_page_filter(self):
-        response = self.client.get('', {'search-request':'Theme-2'})
+        response = self.client.get('', {'search-request': 'Theme-2'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, len(response.context['object_list']))

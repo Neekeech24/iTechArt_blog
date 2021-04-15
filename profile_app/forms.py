@@ -1,7 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
-
+from profile_app.models import UserModel
 from django.contrib.auth.password_validation import validate_password
+from .tasks import registration_email
 
 
 class UpdateUserForm(forms.ModelForm):
@@ -9,7 +9,7 @@ class UpdateUserForm(forms.ModelForm):
     last_name = forms.CharField(required=False)
 
     class Meta:
-        model = User
+        model = UserModel
         fields = ['username', 'first_name', 'last_name']
 
 
@@ -18,8 +18,8 @@ class RegisterUserForm(forms.ModelForm):
     password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput)
 
     class Meta:
-        model = User
-        fields = ('username',)
+        model = UserModel
+        fields = ('username', 'email')
 
     def clean(self):
         super().clean()

@@ -22,6 +22,9 @@ form.addEventListener('submit', function (e) {
         },
         success: function (responseData) {
             if (typeof responseData == 'object') {
+                const commentCount = document.getElementById('comment-count');
+                let counter = parseInt(commentCount.innerText);
+                commentCount.textContent = counter + 1;
                 const commentsContainer = $('.comments-block');
                 commentsContainer.prepend(`
                     <div class="comment">

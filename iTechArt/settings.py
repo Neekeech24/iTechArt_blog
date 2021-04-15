@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -30,6 +31,33 @@ ALLOWED_HOSTS = ['127.0.0.1', ]
 
 INTERNAL_IPS = ['127.0.0.1',]
 
+# Email Settings
+ANYMAIL = {
+    "MAILGUN_API_KEY": "4b10eda9e7720819449d94f139e7c3b0-a09d6718-42acd750",
+}
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@sandboxe60964941cad4ad695f63b8961e22363.mailgun.org'
+EMAIL_HOST_PASSWORD = '4e407374f054eb5721d9f6951c35d26c-a09d6718-a99b969a'
+EMAIL_USE_TSL = True
+EMAIL_USE_SSL = False
+
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Minsk"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+CELERY_BEAT_SCHEDULE = {
+    'blog_app.tasks.last_added_comments': {
+        'task': 'blog_app.tasks.last_added_comments',
+        'schedule': crontab()
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +70,9 @@ INSTALLED_APPS = [
     'blog_app.apps.BlogAppConfig',
     'profile_app.apps.ProfileAppConfig',
     'debug_toolbar',
+    'django_celery_beat',
+    'django_celery_results',
+    'anymail'
 ]
 
 MIDDLEWARE = [
@@ -108,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'profile_app.UserModel'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 

@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from profile_app.models import UserModel
 
 from .models import Article, Comment
 
@@ -27,7 +27,7 @@ class CreateArticleForm(forms.ModelForm):
 class CreateCommentForm(forms.ModelForm):
     article = forms.ModelChoiceField(queryset=Article.objects.all())
     body = forms.CharField(widget=forms.Textarea, required=True, help_text='Ваш комментарий')
-    auth_user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    auth_user = forms.ModelChoiceField(queryset=UserModel.objects.all(), required=False)
     anon_user = forms.CharField(required=False)
 
     class Meta:

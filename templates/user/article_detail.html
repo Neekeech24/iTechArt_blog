@@ -29,7 +29,7 @@
                 <li>Автор: <a href="{% url 'profile_detail' pk=article.author.id %}">{{ article.author }}</a><br/>
                     Дата публикации: {{ article.pub_date|date:"d.m.Y H:i" }}</li>
                 <li>Рейтинг: {{ article.rating_set.all|length }}<br/>
-                    Комментариев: {{ article.comment_set.all|length }}</li>
+                    Комментариев: <span id="comment-count">{{ article.comment.all|length }}</span></li>
                 <a href="{% url 'update_rating' article_id=article.id %}">Update</a>
             </ul>
         </div>

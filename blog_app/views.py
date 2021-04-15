@@ -26,12 +26,14 @@ class MainPageView(ListView):
                      'rate-desc': '-rating', 'rate-asc': 'rating',
                      'a-asc':'author', 'a-desc':'-author'}
         queryset = Article.objects.all()
+        queryset = queryset.annotate(comment_count=Count('comment__id', distinct=True),
+                                     rating_count=Count('rating__id', distinct=True))
         if sr:
             queryset = queryset.filter(Q(theme__icontains=sr) | Q(text__icontains=sr))
         if sort:
             queryset = queryset.order_by(sort_dict[sort])
-        queryset = queryset.annotate(comment_count=Count('comment__id', distinct=True),
-                                     rating_count=Count('rating__id', distinct=True))
+        else:
+            queryset = queryset.order_by('-pub_date')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -46,9 +48,9 @@ class MainPageView(ListView):
 
 
 def article_detail(request, article_id):
-    article = get_object_or_404(Article.objects.prefetch_related('comment_set', 'author'), id=article_id)
+    article = get_object_or_404(Article.objects.prefetch_related('comment', 'author'), id=article_id)
     return render(request, 'user/article_detail.html',
-                  context={'article': article, 'comments': article.comment_set.all()})
+                  context={'article': article, 'comments': article.comment.all()})
 
 
 class CreateArticleView(CreateView, SingleObjectMixin):
@@ -116,20 +118,17 @@ def update_rating(request, article_id):
 
 def create_comment(request):
     data = request.POST
-    article = get_object_or_404(Article.objects.prefetch_related('comment_set'), id=data['article'])
+    article = get_object_or_404(Article.objects.prefetch_related('comment'), id=data['article'])
     form_data = {'article': article, 'body': data['body'], 'username': 'Гость'}
     if request.user.is_authenticated:
         form_data['auth_user'] = request.user
         form_data['username'] = request.user.username
-        print(request.user.username)
     else:
         request.session.save()
         form_data['anon_user'] = request.session.session_key
-    print(form_data)
     form = CreateCommentForm(data=form_data)
     if form.is_valid():
         comment = form.save()
-        print(comment.username)
         return JsonResponse(data=model_to_dict(comment))
     else:
         return JsonResponse(form.errors.as_json(), safe=False)

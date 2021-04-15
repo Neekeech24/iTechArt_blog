@@ -1,7 +1,6 @@
 import factory
-from django.contrib.auth.models import User
 from django.test import TestCase, Client
-
+from .models import UserModel
 from .forms import RegisterUserForm
 
 
@@ -12,7 +11,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.LazyAttribute(lambda a: '{}.{}@example.com'.format(a.first_name, a.last_name).lower())
 
     class Meta:
-        model = User
+        model = UserModel
         django_get_or_create = ('username',)
 
 
@@ -85,10 +84,6 @@ class RegisterFormTest(TestCase):
 
 class ClientRegisterTest(TestCase):
 
-    @classmethod
-    def setUpTestData(cls):
-        cls.client = Client()
-
     def test_register_empty_form(self):
         response = self.client.post('/accounts/registration', data={})
         self.assertEqual(response.status_code, 400)
@@ -99,26 +94,6 @@ class ClientRegisterTest(TestCase):
         }
         received_errors = dict(zip(response.context['form'].errors.keys(), response.context['form'].errors.values()))
         self.assertEqual(expected_errors, received_errors)
-    #
-    # def test_wo_password(self):
-    #     response = self.client.post('/accounts/registration', data={'username':'Username'})
-    #     self.assertEqual(response.status_code, 400)
-    #     expected_errors = {
-    #         'password': ['Обязательное поле.'],
-    #         'password2': ['Обязательное поле.']
-    #     }
-    #     received_errors = dict(zip(response.context['form'].errors.keys(), response.context['form'].errors.values()))
-    #     self.assertEqual(expected_errors, received_errors)
-    #
-    # def test_wo_username(self):
-    #     response = self.client.post('/accounts/registration',
-    #                                 data={'password':'testingForm123', 'password2':'testingForm123'})
-    #     self.assertEqual(response.status_code, 400)
-    #     expected_errors = {
-    #         'username': ['Обязательное поле.']
-    #     }
-    #     received_errors = dict(zip(response.context['form'].errors.keys(), response.context['form'].errors.values()))
-    #     self.assertEqual(expected_errors, received_errors)
 
     def test_unequal_password(self):
         response = self.client.post('/accounts/registration',
@@ -137,6 +112,8 @@ class ClientRegisterTest(TestCase):
                                     data={'username': 'Username',
                                           'password': 'testingForm123',
                                           'password2': 'testingForm123'})
+        user = User.objects.get()
+        self.assertEqual(user.username, 'Username')
         self.assertRedirects(response, '/')
 
     def test_non_unique_username(self):

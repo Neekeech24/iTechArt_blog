@@ -1,6 +1,5 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
@@ -13,6 +12,8 @@ from django.views.generic.list import MultipleObjectMixin
 
 from blog_app.models import Article
 from profile_app.forms import UpdateUserForm, RegisterUserForm
+from profile_app.models import UserModel
+from .tasks import registration_email
 
 
 # Create your views here.
@@ -32,7 +33,7 @@ class ProfileView(View):
 class UpdateUserView(UpdateView):
     template_name = 'user/profile_detail.html'
     form_class = UpdateUserForm
-    model = User
+    model = UserModel
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -51,12 +52,12 @@ class UpdateUserView(UpdateView):
 
 
 class ProfileDetailView(DetailView, MultipleObjectMixin):
-    model = User
+    model = UserModel
     template_name = 'user/profile_detail.html'
     paginate_by = 15
 
     def get_context_data(self, **kwargs):
-        self.object = self.get_object(User.objects.prefetch_related('article_set'))
+        self.object = self.get_object(UserModel.objects.prefetch_related('article_set'))
         object_list = self.get_articles(self.request)
         context = super(ProfileDetailView, self).get_context_data(object_list=object_list, **kwargs)
         context['form'] = UpdateUserForm()
@@ -82,7 +83,7 @@ def user_profile(request):
 
 @login_required
 def delete_profile(request):
-    user = get_object_or_404(User, id=request.user.id)
+    user = get_object_or_404(UserModel, id=request.user.id)
     logout(request)
     user.delete()
     return redirect('main_page')
@@ -95,10 +96,12 @@ class RegistraionView(SuccessMessageMixin, CreateView):
     success_message = "Your profile was created successfully"
 
     def form_invalid(self, form):
+        print(form.errors)
         return TemplateResponse(self.request, template='registration/registration.html', context=self.get_context_data(), status=400)
 
     def form_valid(self, form):
         self.object = form.save()
         self.object.set_password(form.cleaned_data['password'])
+        registration_email.delay(self.object.pk)
         login(request=self.request, user=self.object)
         return super().form_valid(form)

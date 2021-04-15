@@ -1,14 +1,12 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
 from django.db.models import Count
 from django.contrib.auth.admin import UserAdmin
 
 from blog_app.admin import ArticleInline
+from profile_app.models import UserModel
 
-admin.site.unregister(User)
 
-
-@admin.register(User)
+@admin.register(UserModel)
 class UserAdmin(UserAdmin):
     inlines = [ArticleInline,]
     search_fields = ['username', 'first_name', 'last_name']
@@ -26,4 +24,4 @@ class UserAdmin(UserAdmin):
         return queryset
 
     class Meta:
-        model = User
+        model = UserModel
