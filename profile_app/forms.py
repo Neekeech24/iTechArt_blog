@@ -16,6 +16,7 @@ class UpdateUserForm(forms.ModelForm):
 class RegisterUserForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput)
+    email = forms.EmailField(label='Email', widget=forms.EmailInput, required=True)
 
     class Meta:
         model = UserModel

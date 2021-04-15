@@ -96,7 +96,6 @@ class RegistraionView(SuccessMessageMixin, CreateView):
     success_message = "Your profile was created successfully"
 
     def form_invalid(self, form):
-        print(form.errors)
         return TemplateResponse(self.request, template='registration/registration.html', context=self.get_context_data(), status=400)
 
     def form_valid(self, form):

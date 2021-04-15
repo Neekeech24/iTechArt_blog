@@ -1,7 +1,9 @@
 import factory
+import unittest
 from django.test import TestCase, Client
 
 from blog_app.models import Article
+from blog_app.tasks import last_added_comments
 from profile_app.tests import UserFactory
 
 
