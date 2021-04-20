@@ -6,6 +6,9 @@ from .models import UserModel
 
 @app.task
 def registration_email(user_id):
-    user = UserModel.objects.get(id=user_id)
-    message = 'Вы успешно зарегистрировались!'
-    return send_mail(f"Hello, {user.username}", message, settings.EMAIL_HOST_USER, [user.email,])
+    try:
+        user = UserModel.objects.get(id=user_id)
+        message = 'Вы успешно зарегистрировались!'
+        return send_mail(f"Hello, {user.username}", message, settings.EMAIL_HOST_USER, [user.email,])
+    except UserModel.DoesNotExist():
+        pass
